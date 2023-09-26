@@ -1,0 +1,24 @@
+---
+loader: taskgraph.loader.transform:loader
+
+transforms:
+    - taskgraph.transforms.job:transforms
+    - taskgraph.transforms.task:transforms
+
+task-defaults:
+    run:
+        using: run-task
+    worker-type: misc
+    worker:
+        docker-image: {"in-tree": "linux"}
+        max-run-time: 60
+
+tasks:
+    dolly:
+        description: "Says hello dolly"
+        run:
+            command: echo "Hello dolly!"
+    world:
+        description: "Says hello world"
+        run:
+            command: echo "Hello world!"

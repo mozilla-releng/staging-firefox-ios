@@ -13,3 +13,5 @@ transforms:
 tasks:
     screenshots:
         symbol: I(screenshots)
+    linux:
+        symbol: I(linux)
