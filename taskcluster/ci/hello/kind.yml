@@ -2,23 +2,21 @@
 loader: taskgraph.loader.transform:loader
 
 transforms:
+    - ffios_taskgraph.transforms.hello
     - taskgraph.transforms.job:transforms
     - taskgraph.transforms.task:transforms
 
 task-defaults:
-    run:
-        using: run-task
     worker-type: misc
     worker:
-        docker-image: {"in-tree": "linux"}
-        max-run-time: 60
+        docker-image: {in-tree: linux}
+        max-run-time: 3600
+    run:
+        using: run-task
+        cwd: '{checkout}'
+        cache-dotcache: true
 
 tasks:
-    dolly:
-        description: "Says hello dolly"
-        run:
-            command: echo "Hello dolly!"
     world:
         description: "Says hello world"
-        run:
-            command: echo "Hello world!"
+        terms: ["world", "goodbye", "how's it going"]
