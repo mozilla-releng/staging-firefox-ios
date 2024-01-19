@@ -108,6 +108,7 @@ async def async_main(token, branch, commit, workflow, pipeline, artifacts_direct
             else:
                 log.info(f"Job {build_slug} is a Pipeline, decide what to retrieve")
 
+
 async def schedule_build(client, branch, commit, workflow=None, pipeline=None, locales=None, derived_data_path=None):
     url = BITRISE_URL_TEMPLATE.format(suffix="builds")
 
@@ -124,7 +125,7 @@ async def schedule_build(client, branch, commit, workflow=None, pipeline=None, l
         ("MOZ_DERIVED_DATA_PATH", derived_data_path),
     ) if environment_variable_value]
 
-    if workflow == None: 
+    if workflow == None:
         data = {
         "hook_info": {
             "type": "bitrise",
@@ -136,7 +137,7 @@ async def schedule_build(client, branch, commit, workflow=None, pipeline=None, l
             "pipeline_id": pipeline
             }
         }
-    else: 
+    else:
         data = {
         "hook_info": {
             "type": "bitrise",
@@ -148,7 +149,7 @@ async def schedule_build(client, branch, commit, workflow=None, pipeline=None, l
             "workflow_id": workflow
             }
         }
-    
+
     log.info(f"Pasing this data {data}")
 
     response = await do_http_request_json(client, url, method="post", json=data)
