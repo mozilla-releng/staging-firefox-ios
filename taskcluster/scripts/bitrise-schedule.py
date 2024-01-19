@@ -262,7 +262,7 @@ async def do_http_request_json(client, url, method="get", **kwargs):
 async def log_bitrise_perfherder_data(file_destination):
     if not os.path.isfile(file_destination):
         raise Exception(f"Bitrise.log not found at {file_destination}")
-    
+  
     try:
         with open(file_destination, 'r') as f:
             for line in f:
