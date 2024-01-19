@@ -20,3 +20,6 @@ tasks:
     world:
         description: "Says hello world"
         terms: ["world", "goodbye", "how's it going"]
+
+    test:
+        description: "Test Task run for irios"
