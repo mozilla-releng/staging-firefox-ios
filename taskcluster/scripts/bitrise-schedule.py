@@ -9,10 +9,8 @@ import asyncio
 import logging
 import os
 import sys
-import json
 
 from aiohttp_retry import RetryClient
-
 
 log = logging.getLogger(__name__)
 
@@ -112,21 +110,14 @@ async def async_main(token, branch, commit, workflow, pipeline, artifacts_direct
 async def schedule_build(client, branch, commit, workflow=None, pipeline=None, locales=None, derived_data_path=None):
     url = BITRISE_URL_TEMPLATE.format(suffix="builds")
 
-    if locales:
-        moz_locales_value = " ".join(locales)
-    else:
-        moz_locales_value = "en-US"
+    moz_locales_value = " ".join(locales) if locales else "en-US"
 
-    environment_variables = [{
-        "mapped_to": environment_variable_name,
-        "value": environment_variable_value,
-    } for environment_variable_name, environment_variable_value in (
+    environment_variables = [{"mapped_to": key, "value": value} for key, value in (
         ("MOZ_LOCALES", moz_locales_value),
         ("MOZ_DERIVED_DATA_PATH", derived_data_path),
-    ) if environment_variable_value]
+    ) if value]
 
-    if workflow == None:
-        data = {
+    data = {
         "hook_info": {
             "type": "bitrise",
         },
@@ -134,21 +125,10 @@ async def schedule_build(client, branch, commit, workflow=None, pipeline=None, l
             "branch": branch,
             "commit_hash": commit,
             "environments": environment_variables,
-            "pipeline_id": pipeline
-            }
+            **({"pipeline_id": pipeline} if pipeline else {}),
+            **({"workflow_id": workflow} if workflow else {}),
         }
-    else:
-        data = {
-        "hook_info": {
-            "type": "bitrise",
-        },
-        "build_params": {
-            "branch": branch,
-            "commit_hash": commit,
-            "environments": environment_variables,
-            "workflow_id": workflow
-            }
-        }
+    }
 
     log.info(f"Pasing this data {data}")
 
@@ -262,7 +242,7 @@ async def do_http_request_json(client, url, method="get", **kwargs):
 async def log_bitrise_perfherder_data(file_destination):
     if not os.path.isfile(file_destination):
         raise Exception(f"Bitrise.log not found at {file_destination}")
- 
+
     try:
         with open(file_destination, 'r') as f:
             for line in f:
