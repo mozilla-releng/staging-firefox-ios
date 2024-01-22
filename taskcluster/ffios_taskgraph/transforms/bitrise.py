@@ -64,7 +64,7 @@ def set_worker_config(config, tasks):
                 "path": f"{_ARTIFACTS_DIRECTORY}/{locale}.zip",
             })
 
-        worker.setdefault("docker-image", {"in-tree": "screenshots"})
+        worker.setdefault("docker-image", {"in-tree": "ubuntu"})
         worker.setdefault("max-run-time", 10800)
 
         task.setdefault("worker-type", "bitrise")

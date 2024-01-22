@@ -15,3 +15,5 @@ tasks:
         symbol: I(alpine)
     screenshots:
         symbol: I(screenshots)
+    ubuntu:
+        symbol: I(ubuntu)

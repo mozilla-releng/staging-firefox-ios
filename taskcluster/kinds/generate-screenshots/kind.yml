@@ -27,3 +27,5 @@ task-defaults:
     index:
         type: l10n-screenshots
     run-on-tasks-for: []
+    worker:
+        docker-image: {in-tree: 'screenshots'}
