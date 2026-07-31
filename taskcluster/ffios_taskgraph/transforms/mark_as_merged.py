@@ -17,14 +17,21 @@ def make_task_description(config, tasks):
         return
 
     for task in tasks:
-        resolve_keyed_by(
-            task,
-            "scopes",
-            item_name=task["name"],
-            level=config.params["level"],
-        )
+        for field in ("scopes", "slack-channel"):
+            resolve_keyed_by(
+                task,
+                field,
+                item_name=task["name"],
+                level=config.params["level"],
+            )
 
         task["worker"]["merge-automation-id"] = merge_automation_id
 
-        yield task
+        slack_channel = task.pop("slack-channel")
 
+        if not merge_config.get("force-dry-run"):
+            route = f"notify.slack-channel.{slack_channel}.on-completed"
+            task.setdefault("routes", []).append(route)
+            task["scopes"].append(f"queue:route:{route}")
+
+        yield task
