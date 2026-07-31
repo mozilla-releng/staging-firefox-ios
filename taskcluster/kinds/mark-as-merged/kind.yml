@@ -33,7 +33,7 @@ tasks:
         slack-channel:
             by-level:
                 '3': C03PKCHHSSD  # firefox-ios-releases
-                default: null
+                default: CN77C0BUG
         task-context:
             from-parameters:
                 version: version
